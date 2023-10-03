@@ -62,7 +62,6 @@ def main():
             screen.blit(bg_img, [0, 0])
             screen.blit(be_img, kk_rct)
             pg.display.update()
-            print("ゲームオーバー")
             return
         screen.blit(bg_img, [0, 0])
         
