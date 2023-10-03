@@ -1,6 +1,7 @@
+import random
 import sys
 import pygame as pg
-import random
+
 
 WIDTH, HEIGHT = 1600, 900
 
@@ -11,29 +12,29 @@ def main():
     bg_img = pg.image.load("fig/pg_bg.jpg")
     kk_img = pg.image.load("fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    bd_img = pg.Surface((20, 20))  # 練習１：爆弾Surfaceを作成する
+    bd_img.set_colorkey((0, 0, 0))  # 練習１：黒い部分を透明にする
+    pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
+    bd_rct = bd_img.get_rect()  # 練習１：SurfaceからRectを抽出する
+    x, y = random.randint(0, WIDTH), random.randint(0, HEIGHT)
+    bd_rct.center = (x, y)  # 練習１：Rectにランダムな座標を設定する
+
     clock = pg.time.Clock()
-    
-    bomb_surface = pg.Surface((10 * 2 , 10 * 2), pg.SRCALPHA)
-    pg.draw.circle(bomb_surface, (255, 0, 0), (10, 10), 10)
-    bomb_surface.set_colorkey((0, 0, 0))
-    
     tmr = 0
+
+    vx, vy = 5, 5
     while True:
         for event in pg.event.get():
-            if event.type == pg.QUIT:
+            if event.type == pg.QUIT: 
                 return
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, [900, 400])
-    
-        bomb_x = random.randint(0, WIDTH - 10)
-        bomb_y = random.randint(0, HEIGHT - 10)
-        bomb_rect = bomb_surface.get_rect(topleft=(bomb_x, bomb_y))
-        screen.blit(bomb_surface, bomb_rect.topleft)
-        
+        bd_rct.move_ip(vx,vy)
+        screen.blit(bd_img, bd_rct)  # 練習１：Rectを使って試しにblit
         pg.display.update()
         tmr += 1
-        clock.tick(10)
+        clock.tick(50)
 
 
 if __name__ == "__main__":
